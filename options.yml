@@ -1,0 +1,139 @@
+meta:
+  version: 1.0.0
+options:
+- name: group1
+  header: AI Ox Tether Control
+  description: AI builds too few ox tethers. The options below tweak that behaviour
+  display: GroupBox
+  columns: 1
+  category:
+  - AI
+  - Buildings
+  - Ox Tether
+  children:
+  - name: element0
+    text: Enable better ox tethers for AI
+    display: Switch
+    url: ai-ox-tethers.oxtethers.enabled
+    contents:
+      value: false
+  - name: element7
+    text: |
+      Set whether values below override AI Personality flavour
+    display: Choice
+    url: ai-ox-tethers.oxtethers.mode
+    enabled: ai-ox-tethers.oxtethers.enabled
+    contents:
+      value: use_aic
+      choices:
+      - name: override_aic
+        text: Override AI Personalities (AIC)
+      - name: use_aic
+        text: Respect AI Personalities (AIC)
+  - name: initialOxTether
+    text: "Disable automatic ox tether placement when quarry is built"
+    display: Switch
+    contents:
+      value: true
+    url: ai-ox-tethers.oxtethers.parameters.disableInitialOxTether
+    enabled: ai-ox-tethers.oxtethers.enabled
+
+  - name: group_dynamic
+    text: Instead of a fixed maximum of 3 ox tethers per quarry, the options below allow more ox tether per quarry.
+    header: Dynamic logic
+    enabled: ai-ox-tethers.oxtethers.logic.dynamic
+    display: GroupBox
+    children:
+    - name: element8
+      text: |
+        Enable dynamic logic
+      display: Switch
+      url: ai-ox-tethers.oxtethers.logic.dynamic
+      enabled: ai-ox-tethers.oxtethers.enabled
+      contents:
+        value: true
+    - name: element5
+      text: >-
+        Set the threshold for determining if a quarry needs an extra ox tether (a lower value means more ox tethers and
+        quicker placement of extra ox tethers).
+
+
+        For example, if the threshold is 20, and there is a quarry
+        with 2 workers taking stones from that quarry and 41 stones are in the quarry's stockpile.
+        Then, as 41 is over the threshold of 20 per worker, an extra ox tether is built for that quarry.
+
+
+        The vanilla value is 20, and the max detected workers per quarry was 3, leading to a max of
+        3 ox tether per quarry.
+
+
+        Set the stone count threshold for determining if a quarry needs an extra ox tether
+      display: Number
+      url: ai-ox-tethers.oxtethers.parameters.thresholdStoneLoad
+      contents:
+        value: 20
+        min: 1
+        max: 48
+        step: 1
+      enabled: ai-ox-tethers.oxtethers.logic.dynamic
+    - name: element4
+      text: Build at most this many ox tethers per quarry, depending on how full the pile is. Value should be higher than the minimum.
+      display: Number
+      url: ai-ox-tethers.oxtethers.parameters.maximumOxTethersPerQuarry
+      contents:
+        value: 6
+        min: 0
+        max: 2000
+        step: 1
+      enabled: ai-ox-tethers.oxtethers.logic.dynamic
+    - name: element1
+      text: Upper limit of amount of ox tethers for a player regardless of the quarry count.
+      display: Number
+      url: ai-ox-tethers.oxtethers.parameters.maxOxTethers
+      enabled: ai-ox-tethers.oxtethers.logic.dynamic
+      contents:
+        value: 100
+        min: 0
+        max: 2000
+        step: 1
+    - name: element2
+      text: If not over the upper limit, the max amount of ox tethers per player will be the amount of quarries of a player multiplied by this value. For example, if 3, then
+        the AI will build max 3 ox tethers per quarry it has.
+      display: Number
+      url: ai-ox-tethers.oxtethers.parameters.dynamicMaxOxTethers
+      enabled: ai-ox-tethers.oxtethers.logic.dynamic
+      contents:
+        value: 3
+        min: 0
+        max: 2000
+        step: 1
+    - name: element3
+      text: Build at least this many ox tethers per quarry, regardless of how full its stone stockpile is.
+      display: Number
+      url: ai-ox-tethers.oxtethers.parameters.minimumOxTethersPerQuarry
+      contents:
+        value: 1
+        min: 0
+        max: 2000
+        step: 1
+      enabled: ai-ox-tethers.oxtethers.logic.dynamic
+  - name: group_advanced
+    header: Avanced settings
+    enabled: ai-ox-tethers.oxtethers.enabled
+    display: GroupBox
+    children:
+      - name: logging
+        header: "Log the ox tether building decision behaviour of the AI"
+        hasHeader: true
+        text: "Set the log level"
+        display: UCP2Slider
+        contents:
+          value:
+            enabled: false
+            sliderValue: 2 # DEBUG level
+          min: -2
+          max: 10
+          step: 1
+          decimals: 0
+        url: ai-ox-tethers.oxtethers.log
+        enabled: ai-ox-tethers.oxtethers.enabled
