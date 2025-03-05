@@ -1,9 +1,12 @@
-# AI: Ox Tethers
+# UCP extension: AI Ox Tethers
+This is a mod for the game Stronghold Crusader (Firefly Studios).
+The mod works with the Unofficial Crusader Patch.
+
 Vanilla AI has an upper bound on three ox tethers per quarry, plus it always builds an ox tether when it places a quarry.
 
 This combination leads to strange behavior as the game progress. This extension addresses this.
 
-The core feature of this extension is that the ox tethers that belong to a quarry are no longer hardcoded but dynamically computed based on the quarry the ox tether worker took stones from last. These ox tethers are termed "linked ox tethers"
+The core feature of this extension is that the ox tethers that belong to a quarry are no longer hardcoded but dynamically computed based on the quarry the ox tether worker took stones from last. These ox tethers are termed "linked ox tethers".
 
 ## Features
 - Allow more than 3 ox tethers per quarry
