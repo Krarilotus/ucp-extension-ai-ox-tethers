@@ -19,7 +19,9 @@ return {
         if logging then
           logf.setLogFunction(function(message)
             log(loglevel, message)
-          end) 
+          end)
+        else
+          logf.setLogFunction(nil)
         end
  
         if config.oxtethers.logic.dynamic == true then
