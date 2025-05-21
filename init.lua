@@ -40,12 +40,12 @@ return {
         end
 
         --- Enable ability to set initial ox tether per AI
-        local status, error = pcall(aiRequiresOxTethers.enableOxTetherDisable)
+        local status, err = pcall(aiRequiresOxTethers.enableOxTetherDisable)
         if status == false then
             log(ERROR,
                 string.format(
                     "Disabling feature to disable ox tethers could not be enabled (is there a conflict with same feature from ucp2-legacy?)\n%s",
-                    tostring(error)))
+                    tostring(err)))
             error(
                 "Disabling feature to disable ox tethers could not be enabled (is there a conflict with same feature from ucp2-legacy?)")
         end
