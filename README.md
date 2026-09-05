@@ -17,7 +17,7 @@ The core feature of this extension is that the ox tethers that belong to a quarr
 
 **Introduced by:** [`ai-ox-tethers` 1.0.0](https://github.com/gynt/ucp-extension-ai-ox-tethers/tree/26c92fa). These seven fields use numeric values in AIC files.
 
-**Requirements:** `ai-ox-tethers >=1.0.0`, framework >=3.0.4, frontend >=1.0.2 and `aicloader >=1.1.0`. Enable the module's **Ox Tethers** switch under **AI → Buildings → Ox Tethers**, then select its AIC mode (`oxtethers.mode: use_aic`). The other mode (`override_aic`) uses menu settings and does not register these fields. AI Swapper is optional. Disable the overlapping initial-ox-tether patch in `ucp2-legacy` if it causes a hook conflict.
+**Requirements:** `ai-ox-tethers >=1.0.0`, framework >=3.0.4, frontend >=1.0.2 and `aicloader >=1.1.0`. Enable the module's **Ox Tethers** switch under **General → AI → Fixes**, then select its AIC mode (`oxtethers.mode: use_aic`). The other mode (`override_aic`) uses menu settings and does not register these fields. AI Swapper is optional. Version 1.0.4 requires the conflicting `ucp2-legacy.ai_tethers.enabled` option to be off automatically.
 
 These fields change whether an AI builds more tethers and which quarry it builds them for. A *linked tether* is associated with the quarry its worker last collected stone from. The five dynamic limits/thresholds apply when `AIOxTethers_Logic` is 1; the initial-tether switch is independent.
 
@@ -51,8 +51,24 @@ Use these fields inside `Personality` in an AIC Loader file, or inside the lower
 
 ## Compact Customizations menu
 
-Find the controls under **AI → Buildings → Ox Tethers**. The “How the rules
-work” panel and Advanced settings start collapsed; click their headings to
-expand them. Number fields use short labels, with a tooltip explaining the
-overall limit multiplier. All menu text is translated into the frontend's nine
-languages. Configuration keys, defaults and runtime rules are unchanged.
+Version 1.0.4 requires GUI 1.0.16. Find the controls under
+**General → AI → Fixes**. Collapsing the main switch hides its description
+and all settings. Dynamic limits has its own switch: its explanation and number
+fields collapse together. Advanced settings start collapsed.
+
+All menu text is translated into the GUI's nine languages. Configuration keys,
+defaults and runtime rules are unchanged.
+
+## Legacy compatibility
+
+While this module is active in Content, the UCP2-Legacy option **Set ox tethers
+to a maximum of 10 per AI lord** is required to be off. Both patches change the
+automatic ox-tether placement check; the legacy option is not an independent
+extra limit. Use this module's maximum instead.
+
+Verified against the installed UCP2-Legacy 2.15.1 patch and both game executables:
+the legacy patch at `0x4EFF9A` (Crusader) / `0x4F032A` (Extreme) replaces the
+conditional jump inside this module's scan pattern, which starts seven bytes
+earlier. Applying the legacy patch makes that scan fail. Its unconditional jump
+also bypasses automatic placement regardless of this module's per-AI setting.
+The required-off setting follows the existing Running Units compatibility rule.

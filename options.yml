@@ -3,20 +3,11 @@ meta:
 options:
 - name: group1
   header: '{{title}}'
-  description: '{{description}}'
-  display: GroupBox
-  columns: 1
+  display: UCP2Switch
   category:
   - '{{ai}}'
-  - '{{buildings}}'
-  - '{{category}}'
+  - '{{fixes}}'
   children:
-  - name: element0
-    text: '{{enabled}}'
-    display: Switch
-    url: ai-ox-tethers.oxtethers.enabled
-    contents:
-      value: false
   - name: element7
     text: '{{mode}}'
     display: Choice
@@ -37,25 +28,11 @@ options:
     url: ai-ox-tethers.oxtethers.parameters.disableInitialOxTether
     enabled: ai-ox-tethers.oxtethers.enabled
   - name: group_dynamic
-    text: '{{dynamic_description}}'
+    text: '{{help_text}}'
     header: '{{dynamic_title}}'
-    enabled: ai-ox-tethers.oxtethers.logic.dynamic
-    display: GroupBox
+    enabled: ai-ox-tethers.oxtethers.enabled
+    display: UCP2Switch
     children:
-    - name: element8
-      text: '{{dynamic_enabled}}'
-      display: Switch
-      url: ai-ox-tethers.oxtethers.logic.dynamic
-      enabled: ai-ox-tethers.oxtethers.enabled
-      contents:
-        value: true
-    - name: elementparagraph1
-      display: GroupBox
-      text: '{{help_text}}'
-      header: '{{help_title}}'
-      accordion:
-        enabled: true
-      children: []
     - name: element1
       text: '{{max_total}}'
       display: Number
@@ -107,6 +84,9 @@ options:
         max: 48
         step: 1
       enabled: ai-ox-tethers.oxtethers.logic.dynamic
+    url: ai-ox-tethers.oxtethers.logic.dynamic
+    contents:
+      value: true
   - name: group_advanced
     header: '{{advanced}}'
     enabled: ai-ox-tethers.oxtethers.enabled
@@ -129,3 +109,7 @@ options:
       enabled: ai-ox-tethers.oxtethers.enabled
     accordion:
       enabled: true
+  text: '{{description}}'
+  url: ai-ox-tethers.oxtethers.enabled
+  contents:
+    value: false

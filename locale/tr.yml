@@ -1,16 +1,11 @@
-buildings: Binalar
-category: Öküz bağlama yerleri
+fixes: Düzeltmeler
 title: Yapay zekâ öküz bağlama yeri kontrolü
 description: Yapay zekânın taş ocakları için nasıl öküz bağlama yeri kuracağını ayarlar.
-enabled: Yapay zekâ öküz bağlama yeri kontrolünü etkinleştir
 mode: AIC ayarları
 override_aic: Bu varsayılanları tüm yapay zekâlar için kullan
 use_aic: Yapay zekâya özel AIC ayarlarına izin ver
 disable_initial: Her taş ocağıyla otomatik olarak öküz bağlama yeri kurma
 dynamic_title: Dinamik sınırlar
-dynamic_description: Taş ocaklarının iş yüküne göre öküz bağlama yeri kur.
-dynamic_enabled: Dinamik sınırları etkinleştir
-help_title: Kurallar nasıl çalışır
 help_text: Her öküz bağlama yeri en son taş aldığı ocağa bağlanır. Yapay zekâ, bir ocağa bağlı yerler
   azsa veya yer başına taş miktarı eşiği aşarsa yenilerini kurar. Aşağıdaki sınırlar daha fazla kurulum
   yapılmasını kısıtlar.

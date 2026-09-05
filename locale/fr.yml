@@ -1,16 +1,11 @@
-buildings: Bâtiments
-category: Attelages de bœufs
+fixes: Correctifs
 title: Gestion des attelages de l’IA
 description: Contrôle la construction des attelages de bœufs pour les carrières de l’IA.
-enabled: Activer la gestion des attelages de l’IA
 mode: Réglages AIC
 override_aic: Utiliser ces valeurs pour toutes les IA
 use_aic: Autoriser les réglages AIC propres à chaque IA
 disable_initial: Ne pas construire automatiquement un attelage avec chaque carrière
 dynamic_title: Limites dynamiques
-dynamic_description: Construire des attelages selon la charge de chaque carrière.
-dynamic_enabled: Activer les limites dynamiques
-help_title: Fonctionnement des règles
 help_text: Chaque attelage est lié à la carrière où il a récupéré de la pierre en dernier. L’IA en ajoute
   si une carrière en a trop peu ou si la pierre par attelage dépasse le seuil. Les limites ci-dessous
   plafonnent les constructions.
