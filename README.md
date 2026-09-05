@@ -34,3 +34,11 @@ If the amount of linked ox tethers for a quarry is higher than this value, no ox
 
 ### `AIOxTethers_ThresholdStoneLoad` 
 If `stones/linked ox tethers` goes above this value for a quarry, another ox tether is built for that quarry.
+
+## Compact Customizations menu
+
+Find the controls under **AI → Buildings → Ox Tethers**. The “How the rules
+work” panel and Advanced settings start collapsed; click their headings to
+expand them. Number fields use short labels, with a tooltip explaining the
+overall limit multiplier. All menu text is translated into the frontend's nine
+languages. Configuration keys, defaults and runtime rules are unchanged.
