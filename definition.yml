@@ -11,8 +11,3 @@ tags:
 - ai
 - economy
 - behavior
-capabilities:
-  files: false
-  code: true
-  configuration: true
-  options: true
