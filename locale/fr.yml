@@ -19,3 +19,6 @@ advanced: Réglages avancés
 logging: Journaliser les décisions de construction d’attelages
 log_level: Niveau du journal
 ai: IA
+tags.ai: IA
+tags.economy: Économie
+tags.behavior: Comportement

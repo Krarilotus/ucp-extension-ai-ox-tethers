@@ -1,9 +1,13 @@
 name: ai-ox-tethers
 display-name: 'AI: Ox Tethers'
-version: 1.0.4
+version: 1.0.5
 author: gynt
 type: module
 dependencies:
   framework: '>=3.0.4'
   frontend: '>=1.0.16 <2.0.0'
   aicloader: '>=1.1.0'
+tags:
+- ai
+- economy
+- behavior

@@ -19,3 +19,6 @@ advanced: Haladó beállítások
 logging: Az MI ökörkarám-építési döntéseinek naplózása
 log_level: Naplózási szint
 ai: MI
+tags.ai: MI
+tags.economy: Gazdaság
+tags.behavior: Viselkedés
