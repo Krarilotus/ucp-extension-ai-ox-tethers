@@ -1,45 +1,40 @@
 # IA : longes à bœufs
 
-L’IA d’origine applique une limite fixe de trois longes à bœufs par carrière lorsqu’elle décide d’en ajouter une. Elle place aussi automatiquement une longe à chaque construction ou reconstruction d’une carrière. Ces deux règles peuvent déséquilibrer le transport de pierre au fil de la partie.
+L’IA construit normalement jusqu’à 3 longes à bœufs par carrière. Elle place aussi automatiquement une longe chaque fois qu’elle construit ou reconstruit une carrière.
 
-Cette extension permet de dépasser trois longes par carrière et de personnaliser les règles, y compris pour chaque personnalité d’IA. Elle compte les **longes rattachées** de façon dynamique : une longe est rattachée à la carrière où son ouvrier a récupéré de la pierre pour la dernière fois.
+Ces longes automatiques peuvent épuiser la capacité de logement de l’IA et empêcher l’arrivée de nouveaux paysans. Cette extension permet de les désactiver et de personnaliser les règles de construction des longes supplémentaires.
 
-## Utiliser les paramètres AIC
+Une **longe rattachée** appartient à la carrière où son ouvrier a récupéré de la pierre pour la dernière fois. Ce rattachement est mis à jour dynamiquement au lieu d’être fixe.
 
-Activez IA : longes à bœufs dans les personnalisations et sélectionnez le mode AIC par IA (`use_aic`). Ajouter le module au contenu ne suffit pas à l’activer. Placez les champs ci-dessous dans `Personality` d’un fichier AIC Loader, ou dans `aic` du fichier `character.json` d’AI Swapper.
-
-Utilisez des valeurs numériques. Les cinq limites et seuils ci-dessous s’appliquent à la logique dynamique (`AIOxTethers_Logic: 1`). Le réglage de la longe initiale est indépendant.
+## Fonctionnalités
+- Autoriser plus de 3 longes à bœufs par carrière
+- Personnaliser les règles de décision pour construire davantage de longes
+- Personnaliser les règles par IA via l’AIC
 
 ## Paramètres AIC
 
-### `AIOxTethers_DisableInitialOxTether`
-
-- **0 :** Conserver le comportement d’origine : placer automatiquement une longe à chaque construction ou reconstruction d’une carrière.
-- **1 :** Ne pas placer cette longe initiale automatique. Des longes supplémentaires peuvent toujours être demandées.
-
 ### `AIOxTethers_Logic`
-
-- **0 :** Utiliser la logique d’origine du jeu pour demander des longes supplémentaires.
-- **1 :** Utiliser la logique dynamique de l’extension et les paramètres suivants.
+0 : Logique d’origine du jeu.
+1 : Logique dynamique utilisant les plafonds et les règles de charge de pierre ci-dessous.
 
 ### `AIOxTethers_MaxOxTethers`
-
-La limite totale de longes pour chaque joueur IA. Les demandes dynamiques cessent lorsque le nombre total de longes atteint cette valeur.
+Plafond total de longes à bœufs par joueur.
 
 ### `AIOxTethers_DynamicMaxOxTethers`
-
-Une seconde limite totale : **cette valeur × le nombre de carrières**. Les demandes dynamiques cessent dès que l’une des deux limites totales est atteinte. Il s’agit d’un multiplicateur du total, pas d’une limite des longes rattachées à chaque carrière.
-
-### `AIOxTethers_MinimumOxTethersPerQuarry`
-
-Si une carrière a moins de longes rattachées que cette valeur, l’IA en demande une autre pour elle, à condition qu’aucune limite totale ne soit atteinte. Cette vérification du minimum est prioritaire sur celle de la charge de pierre.
-
-### `AIOxTethers_MaximumOxTethersPerQuarry`
-
-Lorsque le nombre de longes rattachées à une carrière atteint cette valeur, celle-ci est exclue des demandes liées à la charge de pierre. Gardez le minimum inférieur ou égal à ce maximum : la vérification du minimum ne tient pas compte de ce maximum.
+Plafond total de longes = cette valeur × nombre de carrières.
+Le plus bas des 2 plafonds totaux s’applique à tout moment.
 
 ### `AIOxTethers_ThresholdStoneLoad`
+Si `pierres/longes rattachées` dépasse cette valeur pour une carrière, une autre longe est construite, dans la limite des plafonds. Sans longe rattachée, la quantité de pierre est utilisée directement.
 
-L’IA demande une autre longe lorsque **pierre en attente à la carrière ÷ longes rattachées** dépasse cette valeur, dans le respect des limites totales et par carrière. Sans longe rattachée, la quantité de pierre en attente est utilisée directement. Une pile pleine contient 48 unités de pierre.
+### `AIOxTethers_DisableInitialOxTether`
+0 : Placer automatiquement une longe à chaque construction ou reconstruction d’une carrière.
+1 : Désactiver ce placement automatique.
 
-Ces limites régissent les demandes dynamiques de nouvelles longes. Elles ne suppriment pas les longes existantes et ne limitent pas le placement automatique distinct des longes initiales. Utilisez `AIOxTethers_DisableInitialOxTether: 1` pour désactiver aussi ce placement automatique.
+Ce réglage est indépendant de la logique dynamique et de ses plafonds.
+
+### `AIOxTethers_MinimumOxTethersPerQuarry`
+Si une carrière a moins de longes rattachées que cette valeur, une autre est construite quelle que soit la charge de pierre, dans la limite du plafond total.
+
+### `AIOxTethers_MaximumOxTethersPerQuarry`
+Plafond des longes rattachées construites pour une carrière selon sa charge de pierre. Le minimum doit rester inférieur ou égal à ce plafond.

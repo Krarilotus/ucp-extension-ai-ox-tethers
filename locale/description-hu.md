@@ -1,45 +1,40 @@
 # MI: ökörkarámok
 
-Az eredeti MI kőfejtőnként legfeljebb három ökörkarámmal számol, amikor eldönti, hogy szükség van-e újabbra. Emellett minden kőfejtő építésekor vagy újjáépítésekor automatikusan elhelyez egy karámot. E két szabály együtt a játék előrehaladtával egyenetlen kőszállításhoz vezethet.
+Az MI alapesetben legfeljebb 3 ökörkarámot épít kőfejtőnként. Emellett minden kőfejtő építésekor vagy újjáépítésekor automatikusan elhelyez egy karámot.
 
-Ez a bővítmény háromnál több karámot is lehetővé tesz kőfejtőnként, és testreszabható szabályokat kínál, akár MI-személyiségenként külön. Dinamikusan számolja a **hozzárendelt ökörkarámokat**: egy karám ahhoz a kőfejtőhöz tartozik, ahonnan a dolgozója legutóbb követ vitt el.
+Ezek az automatikus karámok kimeríthetik az MI lakóhelyeinek kapacitását, így nem jelennek meg új parasztok. A bővítménnyel kikapcsolható ez a viselkedés, és beállítható, mikor épüljenek további karámok.
 
-## Az AIC-beállítások használata
+Egy **hozzárendelt ökörkarám** ahhoz a kőfejtőhöz tartozik, ahonnan a dolgozója legutóbb követ vitt el. Ez a hozzárendelés dinamikusan frissül, nem rögzített.
 
-Engedélyezd az MI: ökörkarámok funkciót a testreszabásoknál, és válaszd az MI-nkénti AIC-módot (`use_aic`). A modul hozzáadása a tartalmakhoz önmagában nem kapcsolja be. Az alábbi mezőket az AIC Loader fájl `Personality` részébe vagy az AI Swapper `character.json` fájljának `aic` részébe írd.
-
-Számértékeket használj. Az alábbi öt korlát és küszöbérték a dinamikus logikára vonatkozik (`AIOxTethers_Logic: 1`). A kezdeti karám beállítása ettől független.
+## Funkciók
+- Több mint 3 ökörkarám engedélyezése kőfejtőnként
+- A további ökörkarámok építéséről döntő szabályok testreszabása
+- A szabályok MI-nkénti testreszabása az AIC-n keresztül
 
 ## AIC-paraméterek
 
-### `AIOxTethers_DisableInitialOxTether`
-
-- **0:** Az eredeti viselkedés megtartása: minden kőfejtő építésekor vagy újjáépítésekor automatikusan kerüljön le egy karám.
-- **1:** Ez az automatikus kezdeti karám ne kerüljön le. További karámok továbbra is igényelhetők.
-
 ### `AIOxTethers_Logic`
-
-- **0:** A játék eredeti logikája döntsön a további karámok igényléséről.
-- **1:** A bővítmény dinamikus logikája és az alábbi beállítások érvényesüljenek.
+0: A játék eredeti logikája.
+1: Dinamikus logika az alábbi korlátokkal és kőterhelési szabályokkal.
 
 ### `AIOxTethers_MaxOxTethers`
-
-Az egyes MI-játékosok összes karámjára vonatkozó korlát. A dinamikus igénylések leállnak, ha a karámok összesített száma eléri ezt az értéket.
+Az ökörkarámok összesített korlátja játékosonként.
 
 ### `AIOxTethers_DynamicMaxOxTethers`
-
-Egy második összesített korlát: **ez az érték × a kőfejtők száma**. A dinamikus igénylések leállnak, amint bármelyik összesített korlátot elérik. Ez az összesített szám szorzója, nem az egyes kőfejtőkhöz rendelt karámok korlátja.
-
-### `AIOxTethers_MinimumOxTethersPerQuarry`
-
-Ha egy kőfejtőhöz ennél kevesebb karám tartozik, az MI újabbat igényel hozzá, feltéve, hogy egyik összesített korlátot sem érte el. A minimum ellenőrzése megelőzi a kőterhelés vizsgálatát.
-
-### `AIOxTethers_MaximumOxTethersPerQuarry`
-
-Ha a kőfejtőhöz rendelt karámok száma eléri ezt az értéket, a kőfejtő kimarad a kőterhelés alapján történő igénylésekből. A minimum ne legyen nagyobb ennél a maximumnál: a minimum ellenőrzése nem veszi figyelembe ezt a maximumot.
+Az ökörkarámok összesített korlátja = ez az érték × a kőfejtők száma.
+Mindig a 2 összesített korlát közül az alacsonyabb érvényes.
 
 ### `AIOxTethers_ThresholdStoneLoad`
+Ha a `kő/hozzárendelt ökörkarámok` értéke egy kőfejtőnél meghaladja ezt az értéket, újabb karám épül, a korlátok figyelembevételével. Hozzárendelt karám nélkül közvetlenül a kő mennyisége számít.
 
-Az MI újabb karámot igényel, ha a **kőfejtőnél elszállításra váró kő ÷ hozzárendelt karámok** értéke meghaladja ezt a küszöböt, az összesített és a kőfejtőnkénti korlátok mellett. Ha nincs hozzárendelt karám, közvetlenül a várakozó kő mennyiségét használja. Egy teljes halom 48 követ tartalmaz.
+### `AIOxTethers_DisableInitialOxTether`
+0: Minden kőfejtő építésekor vagy újjáépítésekor automatikusan elhelyez egy karámot.
+1: Kikapcsolja ezt az automatikus elhelyezést.
 
-Ezek a korlátok az új karámok dinamikus igénylését szabályozzák. Nem távolítják el a meglévő karámokat, és nem korlátozzák a kezdeti karámok különálló, automatikus elhelyezését. Ennek kikapcsolásához is használd az `AIOxTethers_DisableInitialOxTether: 1` beállítást.
+Ez a beállítás független a dinamikus logikától és annak korlátaitól.
+
+### `AIOxTethers_MinimumOxTethersPerQuarry`
+Ha egy kőfejtőhöz ennél kevesebb ökörkarám tartozik, a kőterheléstől függetlenül újabb épül, az összesített korlát figyelembevételével.
+
+### `AIOxTethers_MaximumOxTethersPerQuarry`
+A kőterhelés alapján egy kőfejtőhöz épített, hozzárendelt ökörkarámok korlátja. A minimum ne legyen nagyobb ennél a korlátnál.
