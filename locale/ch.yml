@@ -17,3 +17,6 @@ advanced: 高级设置
 logging: 记录AI建造牛车站的决策
 log_level: 日志级别
 ai: AI
+tags.ai: 人工智能
+tags.economy: 经济
+tags.behavior: 行为

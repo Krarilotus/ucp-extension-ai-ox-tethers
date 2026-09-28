@@ -19,3 +19,6 @@ advanced: Ajustes avanzados
 logging: Registrar las decisiones de la IA sobre postes
 log_level: Nivel de registro
 ai: IA
+tags.ai: IA
+tags.economy: Economía
+tags.behavior: Comportamiento

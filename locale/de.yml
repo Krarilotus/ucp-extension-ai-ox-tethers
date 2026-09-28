@@ -19,3 +19,6 @@ advanced: Erweiterte Einstellungen
 logging: Bauentscheidungen der KI für Ochsenjoche protokollieren
 log_level: Protokollstufe
 ai: KI
+tags.ai: KI
+tags.economy: Wirtschaft
+tags.behavior: Verhalten

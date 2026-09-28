@@ -19,3 +19,6 @@ advanced: تنظیمات پیشرفته
 logging: ثبت تصمیم‌های هوش مصنوعی دربارهٔ جایگاه گاو
 log_level: سطح گزارش
 ai: هوش مصنوعی
+tags.ai: هوش مصنوعی
+tags.economy: اقتصاد
+tags.behavior: رفتار

@@ -19,3 +19,6 @@ advanced: Gelişmiş ayarlar
 logging: Yapay zekânın öküz bağlama yeri kararlarını günlüğe yaz
 log_level: Günlük düzeyi
 ai: Yapay zekâ
+tags.ai: Yapay zekâ
+tags.economy: Ekonomi
+tags.behavior: Davranış
