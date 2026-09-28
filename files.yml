@@ -7,5 +7,4 @@ files:
 - src: dynamic
 - src: options.yml
 - src: README.md
-- src: description.md
 - src: locale
