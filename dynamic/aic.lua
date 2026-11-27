@@ -1,4 +1,5 @@
 local aiRequiresOxTethers = require("dynamic")
+local getAICValue = require("dynamic.parameters").getAICValue
 
 local AICDefaults = {
     -- 0 means vanilla (place ox tether every time quarry is built)
@@ -29,6 +30,7 @@ local registerAICValues = function(dynamicReady, initialReady)
                 k,
                 -- set
                 function(aiType, aicValue)
+                    if aicValue == nil then return getAICValue(aiType, k) end
                     if type(aicValue) ~= "number" then
                         log(ERROR,
                             string.format("Cannot set AIC '%s', invalid value: %s", k,

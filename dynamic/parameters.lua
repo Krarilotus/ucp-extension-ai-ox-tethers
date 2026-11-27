@@ -46,6 +46,13 @@ local translations = {
     ["AIOxTethers_MaximumOxTethersPerQuarry"] = "maximumOxTethersPerQuarry",
     ["AIOxTethers_ThresholdStoneLoad"]        = "thresholdStoneLoad",
 }
+local function getAICValue(aiType, field)
+    local key = translations[field]
+    local value = oxTetherParametersPerAI[aiType][key]
+    if key == "logic" then return value == "dynamic" and 1 or 0 end
+    return value
+end
+
 local function setOxTetherParameter(aiType, parameter, value, report)
     local key = translations[parameter] or parameter
     local default = oxTetherParameters[key]
@@ -79,4 +86,5 @@ end
 return {
   oxTetherParametersPerAI = oxTetherParametersPerAI,
   setOxTetherParameter = setOxTetherParameter,
+  getAICValue = getAICValue,
 }
