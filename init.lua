@@ -39,7 +39,13 @@ return {
         end
 
         local logging = settings.log
-        if type(logging) == "table" and logging.enabled == true then
+        if logging ~= nil and type(logging) ~= "table" then
+            log(ERROR, "AI Ox Tethers log settings must be a table; logging is off.")
+            logging = nil
+        elseif logging and logging.enabled ~= nil and type(logging.enabled) ~= "boolean" then
+            log(ERROR, "AI Ox Tethers log enabled setting must be a boolean; logging is off.")
+        end
+        if logging and logging.enabled == true then
             local level = logging.sliderValue
             if type(level) ~= "number" then
                 log(ERROR, "AI Ox Tethers log level must be a number; using the default level.")
