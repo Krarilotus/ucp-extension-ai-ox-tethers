@@ -46,57 +46,35 @@ local translations = {
     ["AIOxTethers_MaximumOxTethersPerQuarry"] = "maximumOxTethersPerQuarry",
     ["AIOxTethers_ThresholdStoneLoad"]        = "thresholdStoneLoad",
 }
-local function translate(aicType, key)
-    if string.find(key, "AIOxTethers_") ~= 1 then
-        return key
+local function setOxTetherParameter(aiType, parameter, value, report)
+    local key = translations[parameter] or parameter
+    local default = oxTetherParameters[key]
+    local severity
+    if key == "logic" then
+        if value == 0 or value == "vanilla" then value = "vanilla"
+        elseif value == 1 or value == "dynamic" then value = "dynamic"
+        else severity = (type(value) == "number" or type(value) == "string") and WARNING or ERROR end
+    elseif key == "disableInitialOxTether" then
+        if type(value) == "boolean" then value = value and 1 or 0
+        elseif type(value) ~= "number" then severity = ERROR
+        elseif value ~= 0 and value ~= 1 then severity = WARNING end
+    elseif default == nil then
+        severity = WARNING
+    elseif type(value) ~= "number" then
+        severity = ERROR
+    else
+        local minimum = key == "thresholdStoneLoad" and 1 or 0
+        local maximum = key == "thresholdStoneLoad" and 48 or 2000
+        if not math.tointeger(value) or value < minimum or value > maximum then severity = WARNING end
     end
-    local tkey = translations[key]
-    if tkey == nil then
-        error(string.format("failed to set ox tether parameter (for ai %s), unknown parameter name %s", aicType,
-            key))
-    end
-
-    return tkey
-end
-
-local logics = {
-    [0] = "vanilla",
-    [1] = "dynamic",
-}
-
-local logics_rev = {}
-for k, v in pairs(logics) do logics_rev[v] = k end
-
-local function setOxTetherParameter(aicType, parameter, value) -- use 0 for player
-    local tparameter = translate(aicType, parameter)
-    if tparameter == "logic" then
-        if type(value) == "number" then
-          oxTetherParametersPerAI[aicType][tparameter] = logics[value] or 0
-          return
-        elseif type(value) == "string" then
-          oxTetherParametersPerAI[aicType][tparameter] = value
-          return
+    if severity then
+        if report ~= false then
+            log(severity, "Invalid AI Ox Tethers " .. tostring(parameter) .. "; using the default.")
         end
-    elseif tparameter == "disableInitialOxTether" then
-        if type(value) == "boolean" then
-            if value then
-                oxTetherParametersPerAI[aicType][tparameter] = 1
-            else
-                oxTetherParametersPerAI[aicType][tparameter] = 0
-            end
-            return
-        end
+        value = default
     end
-
-    if type(value) ~= "number" then
-        error(string.format(
-            "failed to set ox tether parameter for aic type %s parameter %s value %s, value is of invalid type",
-            aicType,
-            parameter, tostring(value)))
-    end
-    oxTetherParametersPerAI[aicType][tparameter] = value
+    if default ~= nil then oxTetherParametersPerAI[aiType][key] = value end
 end
-
 
 return {
   oxTetherParametersPerAI = oxTetherParametersPerAI,

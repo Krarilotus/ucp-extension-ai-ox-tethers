@@ -1,14 +1,14 @@
-local game = require("dynamic.game")
-local ptrCurrentAIArray = game.ptrCurrentAIArray
 local oxTetherParametersPerAI = require("dynamic.parameters").oxTetherParametersPerAI
 local logf = require("dynamic.log")
 
 --[[ AI disable ox tether ]]
-local function enableOxTetherDisable()
+local function enableOxTetherDisable(ptrCurrentAIArray)
   -- EBP contains playerID
-  local detourLoc1 = core.AOBScan("83 ? ? ? ? ? ? 0F ? ? ? ? ? 8B 86 54 45 0B 00")
+  local detourLoc1, reason = core.AOBScanUnique("83 3D ? ? ? ? 00 0F 85 ? ? ? ? 8B 86 54 45 0B 00")
+  assert(detourLoc1, "quarry placement: " .. tostring(reason))
   local detourSize1 = 7
-  local skipBuildingLoc = core.AOBScan("8B 4C 24 10 A1 ? ? ? ?") + 37
+  local skipBuildingLoc = detourLoc1 + 13 + core.readInteger(detourLoc1 + 9)
+  assert(core.matchesAOB("5F 5B 5E 5D 59 C2 04 00", skipBuildingLoc), "unexpected placement exit")
 
   local yoinkAddr = core.allocateCode({ 0x90, 0x90, 0x90, 0x90, 0x90, 0xC3 })
   core.detourCode(function(registers)

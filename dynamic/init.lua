@@ -3,16 +3,8 @@ local original_func
 
 local oxTetherParametersPerAI = require("dynamic.parameters").oxTetherParametersPerAI
 
-local game = require("dynamic.game")
-local getAITypeForPlayer = game.getAITypeForPlayer
-local countOxTethers = game.countOxTethers
-local countQuarries = game.countQuarries
-local selectQuarryToAddOxTetherFor = game.selectQuarryToAddOxTetherFor
-local countLinkedOxTethers = game.countLinkedOxTethers
-local getQuarryStockpileID = game.getQuarryStockpileID
-local getQuarryStockpileStoneInStock = game.getQuarryStockpileStoneInStock
-local findFirstQuarry = game.findFirstQuarry
-local findNextQuarry = game.findNextQuarry
+local bindings = require("dynamic.game")
+local game
 
 local patch = require("dynamic.patch")
 
@@ -21,7 +13,7 @@ local setOxTetherParameter = require("dynamic.parameters").setOxTetherParameter
 local logf = require("dynamic.log")
 
 local function newAiRequiresExtraOxTethers(this, playerID)
-    local oxTetherParameters = oxTetherParametersPerAI[getAITypeForPlayer(playerID)]
+    local oxTetherParameters = oxTetherParametersPerAI[game.getAITypeForPlayer(playerID)]
 
     if oxTetherParameters.logic == "vanilla" then
       logf.log_function(string.format("Executing vanilla logic"))
@@ -35,8 +27,8 @@ local function newAiRequiresExtraOxTethers(this, playerID)
         return original_func(this, playerID)
     end
 
-    local quarryCount = countQuarries(playerID)
-    local oxtetherCount = countOxTethers(playerID)
+    local quarryCount = game.countQuarries(playerID)
+    local oxtetherCount = game.countOxTethers(playerID)
 
     logf.log_function(string.format("Player #%s: quarries = %s ox tethers = %s", playerID, quarryCount, oxtetherCount))
 
@@ -56,7 +48,7 @@ local function newAiRequiresExtraOxTethers(this, playerID)
     end
 
     -- set highest loaded quarry to 0
-    selectQuarryToAddOxTetherFor(playerID, 0)
+    game.selectQuarryToAddOxTetherFor(playerID, 0)
 
     local lowestOxTetherCountQuarryID = 0
     local lowestOxTetherCount = oxTetherParameters.maxOxTethers
@@ -64,7 +56,7 @@ local function newAiRequiresExtraOxTethers(this, playerID)
     local highestLoadQuarryID = 0
     local highestLoad = 0
 
-    local quarryID = findFirstQuarry(playerID)
+    local quarryID = game.findFirstQuarry(playerID)
 
     if quarryID == 0 then
       logf.log_function(string.format(
@@ -73,10 +65,10 @@ local function newAiRequiresExtraOxTethers(this, playerID)
     end
 
     while quarryID ~= 0 do
-        local quarryStockPileID = getQuarryStockpileID(quarryID)
-        local stoneInStock = getQuarryStockpileStoneInStock(quarryStockPileID)
+        local quarryStockPileID = game.getQuarryStockpileID(quarryID)
+        local stoneInStock = game.getQuarryStockpileStoneInStock(quarryStockPileID)
 
-        local linkedTetherCount = countLinkedOxTethers(playerID, quarryID)
+        local linkedTetherCount = game.countLinkedOxTethers(playerID, quarryID)
 
         -- Although this part is not required anymore for counting tethers, it is still required to clean up tether linking.
         -- Until we know what that is used for throughout the game, let's keep it.
@@ -113,7 +105,7 @@ local function newAiRequiresExtraOxTethers(this, playerID)
             highestLoadQuarryID = quarryID
         end
 
-        quarryID = findNextQuarry(playerID, quarryID)
+        quarryID = game.findNextQuarry(playerID, quarryID)
     end
 
     -- TODO: can this cause an infinite spam on badly designed maps where the AI misplaces quarries?
@@ -121,7 +113,7 @@ local function newAiRequiresExtraOxTethers(this, playerID)
       logf.log_function(string.format(
           "Player #%s: has too few ox tethers %s for quarry #%s (AIOxTethers_MinimumOxTethersPerQuarry = %s)", playerID,
           lowestOxTetherCount, lowestOxTetherCountQuarryID, oxTetherParameters.minimumOxTethersPerQuarry))
-      selectQuarryToAddOxTetherFor(playerID, lowestOxTetherCountQuarryID)
+      game.selectQuarryToAddOxTetherFor(playerID, lowestOxTetherCountQuarryID)
       -- TODO: maybe not return here and not break the loop?
       return 1
     end
@@ -136,7 +128,7 @@ local function newAiRequiresExtraOxTethers(this, playerID)
             highestLoadQuarryID,
             oxTetherParameters.thresholdStoneLoad
             ))
-        selectQuarryToAddOxTetherFor(playerID, highestLoadQuarryID)
+        game.selectQuarryToAddOxTetherFor(playerID, highestLoadQuarryID)
         return 1
     end
 
@@ -159,12 +151,13 @@ return {
     --     original_func = func
     -- end,
     ["enableOxTetherDisable"] = patch.enableOxTetherDisable,
-    ["enableHook"] = function()
-    
-      -- 0x004cb3a0
-      local hookAddress = core.AOBScan(
+    ["bindAI"] = bindings.bindAI,
+    ["enableHook"] = function(ptrCurrentAIArray)
+      local hookAddress, reason = core.AOBScanUnique(
         "83 ec 08 55 8b 6c 24 10 56 57 6a 14 55 b9 ? ? ? ? e8 ? ? ? ? 6a 01 6a 04 33 ff 55 b9 ? ? ? ?")
 
+      assert(hookAddress, "placement decision: " .. tostring(reason))
+      game = bindings.bindGame(ptrCurrentAIArray)
       original_func = core.hookCode(function(this, playerID)
           log(VERBOSE, string.format("aiRequiresExtraOxtethers(%s)", playerID))
 

@@ -21,31 +21,34 @@ local AICDefaults = {
     ["AIOxTethers_ThresholdStoneLoad"]        = 20,
 }
 
-local registerAICValues = function()
+local registerAICValues = function(dynamicReady, initialReady)
     for k, v in pairs(AICDefaults) do
-        modules.aicloader:setAdditionalAICValue(
-            k,
-            -- set
-            function(aiType, aicValue)
-                if type(aicValue) ~= "number" then
-                    log(WARNING,
-                        string.format("Cannot set AIC '%s', invalid value: %s", k,
-                            tostring(aicValue)))
-                else
+        local initialField = k == "AIOxTethers_DisableInitialOxTether"
+        if (initialField and initialReady) or (not initialField and dynamicReady) then
+            modules.aicloader:setAdditionalAICValue(
+                k,
+                -- set
+                function(aiType, aicValue)
+                    if type(aicValue) ~= "number" then
+                        log(ERROR,
+                            string.format("Cannot set AIC '%s', invalid value: %s", k,
+                                tostring(aicValue)))
+                    else
+                        log(VERBOSE,
+                            string.format("Setting %s for ai #%s to value '%s'", k, aiType,
+                                tostring(aicValue)))
+                        aiRequiresOxTethers.setOxTetherParameter(aiType, k, aicValue)
+                    end
+                end,
+                -- reset
+                function(aiType)
                     log(VERBOSE,
-                        string.format("Setting %s for ai #%s to value '%s'", k, aiType,
-                            tostring(aicValue)))
-                    aiRequiresOxTethers.setOxTetherParameter(aiType, k, aicValue)
+                        string.format("Resetting %s for ai #%s to value '%s'", k, aiType,
+                            tostring(v)))
+                    aiRequiresOxTethers.setOxTetherParameter(aiType, k, v)
                 end
-            end,
-            -- reset
-            function(aiType)
-                log(VERBOSE,
-                    string.format("Resetting %s for ai #%s to value '%s'", k, aiType,
-                        tostring(v)))
-                aiRequiresOxTethers.setOxTetherParameter(aiType, k, v)
-            end
-        )
+            )
+        end
     end
 end
 
