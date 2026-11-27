@@ -41,4 +41,9 @@ With the module's AIC mode (`oxtethers.mode: use_aic`), put these fields in an A
 
 ## Legacy compatibility
 
-While this module is active, the UCP2-Legacy option **Set ox tethers to a maximum of 10 per AI lord** must be off, and the launcher keeps it off. Both change the same placement check, so use this module's maximum instead.
+The launcher keeps UCP2-Legacy's **Set ox tethers to a maximum of 10 per AI lord**
+option off while this module is active. Legacy skips the automatic tether that
+comes with a new quarry. That changes the branch this module needs to control
+automatic placement per AI. Use `AIOxTethers_DisableInitialOxTether` or the
+module's menu to control that placement, and the dynamic limits to cap requests
+for additional tethers.
