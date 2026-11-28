@@ -1,4 +1,4 @@
-fixes: Fehlerbehebungen
+fixes: Korrekturen
 title: Ochsenjoche der KI
 description: Bestimmt, wie die KI Ochsenjoche für ihre Steinbrüche baut.
 mode: AIC-Einstellungen
@@ -19,3 +19,4 @@ advanced: Erweiterte Einstellungen
 logging: Bauentscheidungen der KI für Ochsenjoche protokollieren
 log_level: Protokollstufe
 ai: KI
+cat_production_supplies: Produktion und Nachschub

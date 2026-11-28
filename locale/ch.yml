@@ -1,4 +1,4 @@
-fixes: 修复
+fixes: 修正
 title: AI牛车站控制
 description: 设置AI如何为采石场建造牛车站。
 mode: AIC设置
@@ -17,3 +17,4 @@ advanced: 高级设置
 logging: 记录AI建造牛车站的决策
 log_level: 日志级别
 ai: AI
+cat_production_supplies: 生产与补给

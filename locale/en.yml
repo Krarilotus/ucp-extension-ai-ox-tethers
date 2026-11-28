@@ -18,3 +18,4 @@ advanced: Advanced settings
 logging: Log AI ox tether decisions
 log_level: Log level
 ai: AI
+cat_production_supplies: Production and supplies
